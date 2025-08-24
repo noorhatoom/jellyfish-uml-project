@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Jellyfish UML Modeling Assistant</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            text-align: center;
+            color: white;
+            margin-bottom: 40px;
+            padding: 40px 0;
+        }
+
+        h1 {
+            font-size: 3.5rem;
+            font-weight: 700;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+
+        .subtitle {
+            font-size: 1.3rem;
+            opacity: 0.9;
+            font-weight: 300;
+            margin-bottom: 20px;
+        }
+
+        .description {
+            font-size: 1.1rem;
+            opacity: 0.8;
+            max-width: 800px;
+            margin: 0 auto;
+            background: rgba(255,255,255,0.1);
+            padding: 20px;
+            border-radius: 10px;
+            backdrop-filter: blur(10px);
+        }
+
+        .main-content {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+
+        .section {
+            padding: 40px;
+            border-bottom: 1px solid #eee;
+        }
+
+        .section:last-child {
+            border-bottom: none;
+        }
+
+        .section h2 {
+            font-size: 2.2rem;
+            color: #667eea;
+            margin-bottom: 30px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .section-icon {
+            font-size: 2rem;
+        }
+
+        .subsection {
+            margin-bottom: 30px;
+            padding: 25px;
+            background: #f8f9fa;
+            border-radius: 15px;
+            border-left: 5px solid #667eea;
+        }
+
+        .subsection h3 {
+            font-size: 1.4rem;
+            color: #333;
+            margin-bottom: 20px;
+            font-weight: 600;
+        }
+
+        .file-list {
+            display: grid;
+            gap: 15px;
+        }
+
+        .file-item {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 15px 20px;
+            background: white;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            transition: all 0.3s ease;
+        }
+
+        .file-item:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 20px rgba(0,0,0,0.1);
+        }
+
+        .file-info {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .file-icon {
+            font-size: 1.5rem;
+            min-width: 40px;
+        }
+
+        .file-name {
+            font-weight: 600;
+            color: #333;
+        }
+
+        .file-type {
+            font-size: 0.9rem;
+            color: #666;
+            margin-top: 2px;
+        }
+
+        .download-btn {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .download-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(102, 126, 234, 0.4);
+        }
+
+        .presentations-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+        }
+
+        .presentation-card {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
+            transition: transform 0.3s ease;
+        }
+
+        .presentation-card:hover {
+            transform: translateY(-5px);
+        }
+
+        .presentation-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 15px;
+        }
+
+        .authors {
+            color: #667eea;
+            font-weight: 500;
+            margin-bottom: 20px;
+        }
+
+        footer {
+            text-align: center;
+            color: white;
+            padding: 30px 0;
+            margin-top: 40px;
+            opacity: 0.8;
+        }
+
+        @media (max-width: 768px) {
+            .container {
+                padding: 10px;
+            }
+            
+            h1 {
+                font-size: 2.5rem;
+            }
+            
+            .section {
+                padding: 25px;
+            }
+            
+            .file-item {
+                flex-direction: column;
+                align-items: flex-start;
+                gap: 15px;
+            }
+            
+            .presentations-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .ai-badge {
+            display: inline-block;
+            background: linear-gradient(45deg, #ff6b6b, #feca57);
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-left: 10px;
+        }
+
+        .coming-soon {
+            opacity: 0.6;
+            font-style: italic;
+        }
+
+        .highlight-box {
+            background: linear-gradient(135deg, #667eea, #764ba2);
+            color: white;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🪼 Jellyfish UML Modeling Assistant</h1>
+            <p class="subtitle">Advanced Topics in Software Engineering - Final Project</p>
+            <div class="description">
+                An innovative AI-powered model that intelligently generates UML diagrams from natural language text descriptions.
+                <br><br>
+                <strong>Made by:</strong> Aviv Borodko, Noor Hatoom, Shihirban Khatib, Noga Dines
+            </div>
+        </header>
+
+        <div class="main-content">
+            <!-- Section 1: Articles and Presentations -->
+            <section class="section">
+                <h2>
+                    <span class="section-icon">📚</span>
+                    Articles and Presentations
+                </h2>
+                
+                <div class="presentations-grid">
+                    <div class="presentation-card">
+                        <h3 class="presentation-title">T1 - Noga & Aviv</h3>
+                        <p>Initial research and theoretical framework for AI-based UML generation</p>
+                        <br>
+                        <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+                            <a href="#" class="download-btn">
+                                📄 Download Presentation
+                            </a>
+                            <a href="#" class="download-btn">
+                                📑 Download Article
+                            </a>
+                        </div>
+                    </div>
+                    
+                    <div class="presentation-card">
+                        <h3 class="presentation-title">T2 - Noor & Shiri</h3>
+                        <p>Technical deep-dive and implementation strategies for the UML modeling assistant</p>
+                        <br>
+                        <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+                            <a href="#" class="download-btn">
+                                📄 Download Presentation
+                            </a>
+                            <a href="#" class="download-btn">
+                                📑 Download Article
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Section 2: Final Project -->
+            <section class="section">
+                <h2>
+                    <span class="section-icon">🎯</span>
+                    Final Project Deliverables
+                </h2>
+                
+                <div class="highlight-box">
+                    <h3>🤖 Jellyfish UML AI Model</h3>
+                    <p>Evaluation of the Jellyfish UML Modeling Assistant</p>
+                </div>
+
+                <div class="file-list">
+                    <div class="file-item">
+                        <div class="file-info">
+                            <div class="file-icon">📋</div>
+                            <div>
+                                <div class="file-name">Final Project Report</div>
+                                <div class="file-type">Comprehensive project documentation</div>
+                            </div>
+                        </div>
+                        <a href="#" class="download-btn">
+                            💾 Download PDF
+                        </a>
+                    </div>
+
+                    <div class="file-item">
+                        <div class="file-info">
+                            <div class="file-icon">🎨</div>
+                            <div>
+                                <div class="file-name">Project Presentation</div>
+                                <div class="file-type">Final presentation slides</div>
+                            </div>
+                        </div>
+                        <a href="#" class="download-btn">
+                            💾 Download PPT
+                        </a>
+                    </div>
+
+                    <div class="file-item">
+                        <div class="file-info">
+                            <div class="file-icon">📖</div>
+                            <div>
+                                <div class="file-name">User Manual</div>
+                                <div class="file-type">Step-by-step usage guide</div>
+                            </div>
+                        </div>
+                        <a href="#" class="download-btn">
+                            💾 Download PDF
+                        </a>
+                    </div>
+
+                    <div class="file-item">
+                        <div class="file-info">
+                            <div class="file-icon">📝</div>
+                            <div>
+                                <div class="file-name">README Documentation</div>
+                                <div class="file-type">Setup and configuration guide</div>
+                            </div>
+                        </div>
+                        <a href="#" class="download-btn">
+                            💾 Download MD
+                        </a>
+                    </div>
+
+                    <div class="file-item">
+                        <div class="file-info">
+                            <div class="file-icon">🧠</div>
+                            <div>
+                                <div class="file-name">AI Model Package</div>
+                                <div class="file-type">Complete LLM model files (ZIP)</div>
+                            </div>
+                        </div>
+                        <a href="#" class="download-btn">
+                            📦 Download ZIP
+                        </a>
+                    </div>
+
+                    <div class="file-item">
+                        <div class="file-info">
+                            <div class="file-icon">⚡</div>
+                            <div>
+                                <div class="file-name">Jellyfish UML Assistant</div>
+                                <div class="file-type">Executable application (Ready to run)</div>
+                            </div>
+                        </div>
+                        <a href="#" class="download-btn">
+                            🚀 Download EXE
+                        </a>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Section 3: Model Evaluation -->
+            <section class="section">
+                <h2>
+                    <span class="section-icon">📊</span>
+                    Model Evaluation & Performance
+                </h2>
+                
+                <div class="subsection">
+                    <h3>🔍 Performance Analysis</h3>
+                    <p>Evaluation of the Jellyfish UML Modeling Assistant including accuracy metrics, 
+                    performance benchmarks, and comparative analysis with existing solutions.</p>
+                    
+                    <div class="file-list">
+                        <div class="file-item">
+                            <div class="file-info">
+                                <div class="file-icon">📈</div>
+                                <div>
+                                    <div class="file-name">Model Evaluation Report</div>
+                                    <div class="file-type">Detailed performance analysis and metrics</div>
+                                </div>
+                            </div>
+                            <a href="#" class="download-btn">
+                                💾 Download PDF
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+
+        <footer>
+            <p>🎓 Advanced Topics in Software Engineering | Final Project 2024</p>
+            <p>Jellyfish UML Modeling Assistant - Transforming Text to UML with AI</p>
+        </footer>
+    </div>
+
+    <script>
+        // Add smooth scrolling and interaction effects
+        document.querySelectorAll('.download-btn').forEach(btn => {
+            btn.addEventListener('mouseenter', function() {
+                this.style.transform = 'translateY(-2px) scale(1.05)';
+            });
+            
+            btn.addEventListener('mouseleave', function() {
+                this.style.transform = 'translateY(0) scale(1)';
+            });
+        });
+
+        // Add loading animation for file items
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.style.opacity = '1';
+                    entry.target.style.transform = 'translateY(0)';
+                }
+            });
+        }, observerOptions);
+
+        document.querySelectorAll('.file-item, .presentation-card').forEach(item => {
+            item.style.opacity = '0';
+            item.style.transform = 'translateY(20px)';
+            item.style.transition = 'all 0.6s ease';
+            observer.observe(item);
+        });
+
+        // Add click handlers for download buttons (you'll need to update these with actual file paths)
+        document.querySelectorAll('.download-btn').forEach(btn => {
+            btn.addEventListener('click', function(e) {
+                e.preventDefault();
+                // Add your download logic here
+                // Example: window.open('path/to/your/file.pdf', '_blank');
+                alert('Download functionality will be connected to your actual files');
+            });
+        });
+    </script>
+</body>
+</html>
